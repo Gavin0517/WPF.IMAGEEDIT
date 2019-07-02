@@ -15,12 +15,11 @@
         <Image Name="imgMeasure" HorizontalAlignment="Center" Stretch="Fill" Source="1.png"/>
         <InkCanvas Name="inkCanvasMeasure" EditingMode="None" Background="Transparent" Strokes="{Binding InkStrokes, Mode=TwoWay}" HorizontalAlignment="Center" 
                    Width="{Binding ElementName=imgMeasure, Path=ActualWidth}" Height="{Binding ElementName=imgMeasure, Path=ActualHeight}"
-                   MouseDown="InkCanvasMeasure_MouseDown" MouseUp="InkCanvasMeasure_MouseUp" MouseMove="InkCanvasMeasure_MouseMove">
-                
+                   MouseDown="InkCanvasMeasure_MouseDown" MouseUp="InkCanvasMeasure_MouseUp" MouseMove="InkCanvasMeasure_MouseMove">                
         </InkCanvas>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-           
+            <ToggleButton Name="btnPen" Content="画笔" Margin="5" HorizontalAlignment="Left" FontSize="20" Click="BtnPen_Click"/>
             <ToggleButton Name="btnSquare" Content="矩形" Margin="5" HorizontalAlignment="Left" FontSize="20" Click="DrawSquare_Click"/>
             <ToggleButton Name="btnEllipse" Content="椭圆" Margin="5" HorizontalAlignment="Left" FontSize="20" Click="DrawEllipse_Click"/>
             <ToggleButton Name="btnArrow" Content="箭头" Margin="5" HorizontalAlignment="Left" FontSize="20" Click="Arrow_Click"/>

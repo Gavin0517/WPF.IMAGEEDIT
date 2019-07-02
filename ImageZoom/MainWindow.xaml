@@ -6,12 +6,14 @@
         xmlns:local="clr-namespace:ImageZoom"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowStartupLocation="CenterScreen" WindowStyle="None" Background="Transparent"   AllowsTransparency="True">
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" Background="Transparent"  
+        AllowsTransparency="True">
     <Grid>
         
-        <StackPanel Background="RED" Grid.Row="0" Panel.ZIndex="0">
+        <Canvas Background="RED" Grid.Row="0" Panel.ZIndex="0">
             <Border>
-            <Image Cursor="ScrollE"   Name="img" Source="elab.png" Width="200" Height="300"
+            <Image Cursor="ScrollE"   Name="img" Source="elab.png"
       MouseWheel="Img_MouseWheel" MouseDown="Img_MouseDown" 
      MouseMove="Img_MouseMove" MouseUp="Img_MouseUp" MouseLeave="Img_MouseLeave">
                 <Image.RenderTransform>
@@ -22,13 +24,13 @@
                 </Image.RenderTransform>
             </Image>
             </Border>
-        </StackPanel>
+        </Canvas>
 
         <!--<InkCanvas Name="inkCanvasMeasure" EditingMode="None" Background="Transparent" Strokes="{Binding InkStrokes, Mode=TwoWay}" HorizontalAlignment="Center" 
                    Width="{Binding ElementName=imgMeasure, Path=ActualWidth}" Height="{Binding ElementName=img, Path=ActualHeight}"
-                   MouseDown="InkCanvasMeasure_MouseDown" MouseMove="InkCanvasMeasure_MouseMove"/>-->
+                   MouseDown="InkCanvasMeasure_MouseDown" MouseMove="InkCanvasMeasure_MouseMove"/>
 
-        <!--<Border Panel.ZIndex="1" Cursor="Hand" Margin="0,5,0,5" 
+        <Border Panel.ZIndex="1" Cursor="Hand" Margin="0,5,0,5" 
                 Background="#0E0E0E" Width="300" Grid.Row="1" CornerRadius="28" BorderBrush="Red">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image Margin="10,0,10,0" Height="25" Width="25" Source="/Resources/kuang.png"></Image>

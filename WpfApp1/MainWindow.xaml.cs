@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,8 +39,28 @@ namespace WpfApp1
             {
                 InkStrokes = new StrokeCollection()
             };
-
+           
             DataContext = viewModel;
+        }
+        private Dictionary<Stroke, Timer> dicTimer = new Dictionary<Stroke, Timer>();
+        private void InkCanvasMeasure_StrokeCollected(object sender, InkCanvasStrokeCollectedEventArgs e)
+        {
+           Timer t1= new Timer(new TimerCallback(ChangeOpacity), e.Stroke, 100, 100);
+            dicTimer.Add(e.Stroke, t1);
+        }
+
+        private void ChangeOpacity(object obj)
+        {
+            Stroke line = obj as Stroke;
+            Color linecolor = line.DrawingAttributes.Color;
+            if (linecolor.ScA > 0)
+                linecolor.ScA -= 0.1f;
+            this.Dispatcher.BeginInvoke(new Action(() => { line.DrawingAttributes.Color = linecolor; }));
+            if (linecolor.A <= 0)
+            {
+                dicTimer[line].Dispose();
+                dicTimer.Remove(line);
+            }
         }
 
         private void DrawSquare_Click(object sender, RoutedEventArgs e)
@@ -49,6 +70,7 @@ namespace WpfApp1
                 drawEnum = DrawEnum.Square;
                 btnEllipse.IsChecked = false;
                 btnArrow.IsChecked = false;
+                btnPen.IsChecked = false;
             }
         }
         private void Arrow_Click(object sender, RoutedEventArgs e)
@@ -58,6 +80,7 @@ namespace WpfApp1
                 drawEnum = DrawEnum.Arrow;
                 btnSquare.IsChecked = false;
                 btnEllipse.IsChecked = false;
+                btnPen.IsChecked = false;
             }
         }
         private void DrawEllipse_Click(object sender, RoutedEventArgs e)
@@ -67,6 +90,7 @@ namespace WpfApp1
                 drawEnum = DrawEnum.Eclipse;
                 btnSquare.IsChecked = false;
                 btnArrow.IsChecked = false;
+                btnPen.IsChecked = false;
             }
         }
         private void InkCanvasMeasure_MouseDown(object sender, MouseButtonEventArgs e)
@@ -97,7 +121,11 @@ namespace WpfApp1
                     (inkCanvasMeasure.Children[0] as Canvas).Children.Add(myPolygon);
 
                 }
-
+                else if (drawEnum == DrawEnum.Pen)
+                {
+                    SetDrawingAttributes();
+                    penCollection = new StylusPointCollection();
+                }
 
 
             }
@@ -112,7 +140,7 @@ namespace WpfApp1
                 Color = Colors.Red,
                 Width = 2,
                 Height = 2,
-                StylusTip = StylusTip.Rectangle,
+                StylusTip = StylusTip.Ellipse,
                 IsHighlighter = false,
                 IgnorePressure = true
             };
@@ -136,6 +164,10 @@ namespace WpfApp1
                 else if (drawEnum == DrawEnum.Arrow)
                 {  // Draw Arrow
                     DrawArrow(endP);
+                }
+                else if (drawEnum == DrawEnum.Pen)
+                {
+                    DrawPen(endP);
                 }
             }
         }
@@ -274,18 +306,58 @@ namespace WpfApp1
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (drawEnums.LastOrDefault() == DrawEnum.Eclipse || drawEnums.LastOrDefault() == DrawEnum.Square)
+            if (drawEnums.LastOrDefault() == DrawEnum.Eclipse || drawEnums.LastOrDefault() == DrawEnum.Square || drawEnums.LastOrDefault() == DrawEnum.Pen)
             {
                 if (viewModel.InkStrokes.Count > 0)
                     viewModel.InkStrokes.RemoveAt(viewModel.InkStrokes.Count - 1);
             }
-            else {
-                var res = (inkCanvasMeasure.Children[0] as Canvas);
-                if (res.Children.Count > 0)
-                    res.Children.RemoveAt(res.Children.Count - 1);
+            else
+            {
+                if (inkCanvasMeasure.Children.Count > 0)
+                {
+                    var res = (inkCanvasMeasure.Children[0] as Canvas);
+                    if (res.Children.Count > 0)
+                        res.Children.RemoveAt(res.Children.Count - 1);
+                }
             }
-            if(drawEnums.Count>0)
+            if (drawEnums.Count > 0)
                 drawEnums.RemoveAt(drawEnums.Count - 1);
+        }
+
+        private void BtnPen_Click(object sender, RoutedEventArgs e)
+        {
+            penCollection = null;
+            if (btnPen.IsChecked == true)
+            {
+                drawEnum = DrawEnum.Pen;
+                btnSquare.IsChecked = false;
+                btnArrow.IsChecked = false;
+                btnEllipse.IsChecked = false;
+            }
+           
+           
+            
+        }
+
+        StylusPointCollection penCollection { get; set; }
+        /// <summary>
+        /// 画笔
+        /// </summary>
+        /// <param name="endP"></param>
+        private void DrawPen(Point endP)
+        {
+            
+                penCollection.Add(new StylusPoint(endP.X, endP.Y));
+                if (stroke != null)
+                    viewModel.InkStrokes.Remove(stroke);
+                stroke = new Stroke(penCollection)
+                {
+                    DrawingAttributes = inkCanvasMeasure.DefaultDrawingAttributes.Clone()
+                };
+            
+                viewModel.InkStrokes.Add(stroke);
+
+            
         }
     }
 }

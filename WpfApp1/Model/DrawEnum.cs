@@ -19,7 +19,12 @@ namespace WpfApp1.Model
         /// <summary>
         /// 箭头
         /// </summary>
-        Arrow
+        Arrow,
+
+        /// <summary>
+        /// 笔
+        /// </summary>
+        Pen
 
     }
 }
