@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ImageZoom.Properties
+namespace WPFPhotoEditorTool.Properties
 {
 
 

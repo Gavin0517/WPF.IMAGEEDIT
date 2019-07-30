@@ -1,0 +1,118 @@
+﻿<Window x:Class="WPFPhotoEditorTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFPhotoEditorTool"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:commands="clr-namespace:WPFPhotoEditorTool.Commands"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="600" Width="800">
+         
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Name="MeasureGrid" >
+            <Image Name="imgMeasure" HorizontalAlignment="Center" Stretch="Fill" Source="Resources/1.png"/>
+            <InkCanvas   Name="inkCanvasMeasure" EditingMode="None" Background="Transparent" Strokes="{Binding InkStrokes, Mode=TwoWay}" HorizontalAlignment="Center" 
+                   Width="{Binding ElementName=imgMeasure, Path=ActualWidth}" Height="{Binding ElementName=imgMeasure, Path=ActualHeight}"
+                    >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <commands:InvokeCommandAction   Command="{Binding InkCanvasMouseDown}" CommandParameter="{Binding ElementName=inkCanvasMeasure}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseUp">
+                        <commands:InvokeCommandAction   Command="{Binding InkCanvasMouseUp}" CommandParameter="{Binding ElementName=inkCanvasMeasure}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <commands:InvokeCommandAction   Command="{Binding InkCanvasMouseMove}" CommandParameter="{Binding ElementName=inkCanvasMeasure}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </InkCanvas>
+        </Grid>
+        <Border Grid.Row="1"  Name="borderButtonsArr" 
+                Cursor="Hand" Margin="0,1,0,1" 
+                Background="#0E0E0E" Width="420" Height="45"  CornerRadius="25" 
+            >
+            <StackPanel  Orientation="Horizontal" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center" >
+                <Image ToolTip="{Binding EditMenus[0].ToolTip}"  Name="btnPen" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[0].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding BrushChangeCommand}" CommandParameter="{Binding ElementName=btnPen}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[1].ToolTip}" Name="btnSquare" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[1].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding BrushChangeCommand}" CommandParameter="{Binding ElementName=btnSquare}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[2].ToolTip}" Name="btnArrow" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[2].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding BrushChangeCommand}" CommandParameter="{Binding ElementName=btnArrow}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[3].ToolTip}" Name="btnSave" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[3].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding SaveImageCommand}" CommandParameter="{Binding ElementName=MeasureGrid}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[4].ToolTip}" Name="btnCancel" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[4].Source}">
+                    <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <commands:InvokeCommandAction   Command="{Binding CancelCommand}"
+                                />
+                    </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[5].ToolTip}" Name="btnSendToCompared" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[5].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding SendToComparedCommand}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[6].ToolTip}" Name="btnSend" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[6].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding SendToIMCommand}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image ToolTip="{Binding EditMenus[7].ToolTip}" Name="btnClose" Margin="10,0,10,0" Height="25" Width="25" Source="{Binding EditMenus[7].Source}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=btnClose}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <TextBlock ToolTip="标记颜色" Name="TxtMarkColor"  Width="25" Height="25"  Margin="10,0,10,0" Background="{Binding MarkColor}">
+                   
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <commands:InvokeCommandAction   Command="{Binding MarkColorSelectCommand}" CommandParameter="{Binding ElementName=TxtMarkColor}"
+                                />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApp1.Model
+namespace WPFPhotoEditorTool.Models
 {
     public enum DrawEnum
     {
+        None,
         /// <summary>
         /// 长方形
         /// </summary>
@@ -20,7 +21,6 @@ namespace WpfApp1.Model
         /// 箭头
         /// </summary>
         Arrow,
-
         /// <summary>
         /// 笔
         /// </summary>
