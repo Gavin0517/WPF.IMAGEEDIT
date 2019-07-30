@@ -41,5 +41,26 @@ namespace WPFPhotoEditorTool
             };
             _viewModel = new MainWindowViewModel();
         }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+            if (this.WindowState == WindowState.Maximized)
+            {
+                var screenWidth = System.Windows.SystemParameters.WorkArea.Width;
+                var screenHeight = System.Windows.SystemParameters.WorkArea.Height;
+
+                ScaleTransform st = new ScaleTransform(screenWidth / this.Width, screenHeight / this.Height, 0, 0);
+                inkCanvasMeasure.RenderTransform = st;
+
+            }
+            else if (this.WindowState == WindowState.Normal)
+            {
+                ScaleTransform st = new ScaleTransform(1, 1, 0, 0);
+                inkCanvasMeasure.RenderTransform = st;
+            }
+
+
+        }
     }
 }
